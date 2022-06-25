@@ -48,7 +48,7 @@ namespace Task_58
 
             Console.WriteLine($"\n\nПеревод всех бойцов из отряда 1, у которых фамилия начинается на букву Б, в отряд 2! :\n");
             _secondCombaUnit = _firstCombaUnit.Where(soldier => soldier.FullName.ToUpper().StartsWith("Б")).Union(_secondCombaUnit).ToList();
-            _firstCombaUnit = _firstCombaUnit.Where(soldier => soldier.FullName.ToUpper().StartsWith("Б") == false).ToList();
+            _firstCombaUnit = _firstCombaUnit.Except(_secondCombaUnit).ToList();
 
             Console.WriteLine($"\nСпиок бойцов первого отряда после перевода:\n");
             ShowSoldiers(_firstCombaUnit);
