@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+/*
+ * Есть 2 списка в солдатами.
+Всех бойцов из отряда 1, у которых фамилия начинается на букву Б, требуется перевести в отряд 2.
+ */
+
+namespace Task_58
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            DatabaseSoldiers databaseSoldiers = new DatabaseSoldiers();
+            databaseSoldiers.RequestForSoldierTransferInformation();
+            Console.ReadKey();
+        }
+    }
+
+    class DatabaseSoldiers
+    {
+        private List<Soldier> _firstCombaUnit = new List<Soldier>();
+        private List<Soldier> _secondCombaUnit = new List<Soldier>();
+
+        public DatabaseSoldiers()
+        {
+            _firstCombaUnit.Add(new Soldier("Блинов Андрей Александрович", "Саперская лопата", "Рядовой", 9));
+            _firstCombaUnit.Add(new Soldier("Иванов Иван Иваныч", "АК 47", "Сержант", 28));
+            _firstCombaUnit.Add(new Soldier("Петров Петр Петрович", "АК 47", "Лейтенант", 14));
+            _firstCombaUnit.Add(new Soldier("Беликов Владимир Владимирович", "Саперская лопата", "Рядовой", 7));
+            _firstCombaUnit.Add(new Soldier("Бранов Бран Бранович", "АК 47", "Сержант", 25));
+            _secondCombaUnit.Add(new Soldier("Сидоров Сидр Сидорович", "Саперская лопата", "Рядовой", 9));
+            _secondCombaUnit.Add(new Soldier("Сергиев Сергей Сергеевич", "АК 47", "Сержант", 21));
+            _secondCombaUnit.Add(new Soldier("Алексеев Алексей Алексеевич", "Саперская лопата", "Рядовой", 6));
+            _secondCombaUnit.Add(new Soldier("Алекссандров Александр Александрович", "АК 47", "Лейтенант", 15));
+        }
+
+        public void RequestForSoldierTransferInformation()
+        {
+            Console.WriteLine($"Спиок бойцов первого отряда:\n");
+            ShowSoldiers(_firstCombaUnit);
+            Console.WriteLine($"\nСпиок бойцов второго отряда:\n");
+            ShowSoldiers(_secondCombaUnit);
+
+            Console.WriteLine($"\n\nПеревод всех бойцов из отряда 1, у которых фамилия начинается на букву Б, в отряд 2! :\n");
+            _secondCombaUnit = _firstCombaUnit.Where(soldier => soldier.FullName.ToUpper().StartsWith("Б")).Union(_secondCombaUnit).ToList();
+            _firstCombaUnit = _firstCombaUnit.Where(soldier => soldier.FullName.ToUpper().StartsWith("Б") == false).ToList();
+
+            Console.WriteLine($"\nСпиок бойцов первого отряда после перевода:\n");
+            ShowSoldiers(_firstCombaUnit);
+            Console.WriteLine($"\nСпиок бойцов второго отряда после перевода:\n");
+            ShowSoldiers(_secondCombaUnit);
+        }
+
+        private void ShowSoldiers(List<Soldier> soldier)
+        {
+            for (int i = 0; i < soldier.Count; i++)
+            {
+                Console.Write($"{i + 1}. ");
+                soldier[i].ShowInfoSoldier();
+            }
+        }
+    }
+
+    class Soldier
+    {
+        public string FullName { get; private set; }
+        public string Weapon { get; private set; }
+        public string Title { get; private set; }
+        public int LengthOfService { get; private set; }
+
+        public Soldier(string fullName, string weapon, string title, int lengthOfService)
+        {
+            FullName = fullName;
+            Weapon = weapon;
+            Title = title;
+            LengthOfService = lengthOfService;
+        }
+        public void ShowInfoSoldier()
+        {
+            Console.WriteLine($"Имя солдата: {FullName}. Оружие - {Weapon}. Звание - {Title}. Срок службы {LengthOfService} Месяцев.");
+        }
+    }
+}
